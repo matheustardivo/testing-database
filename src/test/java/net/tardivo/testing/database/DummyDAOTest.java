@@ -1,0 +1,45 @@
+package net.tardivo.testing.database;
+
+import static org.junit.Assert.assertEquals;
+
+import java.util.List;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = "classpath:spring-testing.xml")
+public class DummyDAOTest extends DatabaseIntegration {
+
+	@Autowired
+	public DummyDAO dao;
+
+	public DummyDAOTest() {
+		super("dbunit/DummyDAOTest.xml");
+	}
+
+	@Test
+	public void findAll() {
+		List<Dummy> list = dao.findAll();
+		assertEquals(4, list.size());
+		assertEquals("Name 1", list.iterator().next().getName());
+	}
+
+	@Test
+	public void getDummy() {
+		Dummy dummy = dao.getDummy(4L);
+		assertEquals("Name 4", dummy.getName());
+	}
+
+	@Test
+	public void persist() {
+		Dummy dummy = new Dummy(null, "Brand new dummy");
+		dao.persist(dummy);
+
+		List<Dummy> list = dao.findAll();
+		assertEquals(5, list.size());
+	}
+}

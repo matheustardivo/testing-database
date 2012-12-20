@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<dataset>
+  	<Dummy id="1" name="Name 1" />
+  	<Dummy id="2" name="Name 2" />
+	<Dummy id="3" name="Name 3" />
+	<Dummy id="4" name="Name 4" />
+</dataset>
