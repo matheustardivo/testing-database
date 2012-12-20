@@ -98,8 +98,7 @@ public class DummyDAOImpl implements DummyDAO {
 		PreparedStatement stmt = null;
 		try {
 			conn = dataSource.getConnection();
-			stmt = conn
-					.prepareStatement("insert into dummy (name) values (?)");
+			stmt = conn.prepareStatement("insert into dummy (name) values (?)");
 			stmt.setString(1, dummy.getName());
 			stmt.executeUpdate();
 
@@ -108,6 +107,43 @@ public class DummyDAOImpl implements DummyDAO {
 			throw new RuntimeException(e);
 
 		} finally {
+			try {
+				stmt.close();
+			} catch (Exception e) {
+			}
+			try {
+				conn.close();
+			} catch (Exception e) {
+			}
+		}
+	}
+
+	@Override
+	public Dummy findDummyByName(String name) {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try {
+			conn = dataSource.getConnection();
+			stmt = conn
+					.prepareStatement("select id, name from dummy where name = ?");
+			stmt.setString(1, name);
+			rs = stmt.executeQuery();
+
+			if (rs.next()) {
+				return new Dummy(rs.getLong("id"), rs.getString("name"));
+			}
+
+			throw new RuntimeException("Dummy not found");
+		} catch (Exception e) {
+			LOGGER.error(e);
+			throw new RuntimeException(e);
+
+		} finally {
+			try {
+				rs.close();
+			} catch (Exception e) {
+			}
 			try {
 				stmt.close();
 			} catch (Exception e) {

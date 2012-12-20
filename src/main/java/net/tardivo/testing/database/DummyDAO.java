@@ -9,4 +9,6 @@ public interface DummyDAO {
 	public Dummy getDummy(Long id);
 
 	public void persist(Dummy dummy);
+
+	public Dummy findDummyByName(String name);
 }

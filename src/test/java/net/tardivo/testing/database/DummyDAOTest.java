@@ -1,6 +1,7 @@
 package net.tardivo.testing.database;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -41,5 +42,18 @@ public class DummyDAOTest extends DatabaseIntegration {
 
 		List<Dummy> list = dao.findAll();
 		assertEquals(5, list.size());
+	}
+
+	@Test
+	public void findDummyByName() {
+		Dummy dummy = dao.findDummyByName("Name 3");
+		assertTrue(3 == dummy.getId());
+		assertEquals("Name 3", dummy.getName());
+	}
+
+	@Test(expected = RuntimeException.class)
+	public void findDummyByNonexistentName() {
+		Dummy dummy = dao.findDummyByName("Brand new dummy");
+		assertEquals("Brand new dummy", dummy.getName());
 	}
 }
